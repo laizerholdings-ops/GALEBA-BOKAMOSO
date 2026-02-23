@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GALEBA BOKAMOSO - Professional Construction & Paving</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+    <style>
+        :root {
+            --color-primary: #D96740;
+            --color-primary-hover: #BF5733;
+        }
+        .bg-accent { background-color: var(--color-primary); }
+        .hover\:bg-accent-hover:hover { background-color: var(--color-primary-hover); }
+        .text-accent { color: var(--color-primary); }
+        .border-accent { border-color: var(--color-primary); }
+        
+        body { font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+        /* --- PRELOADER --- */
+        #preloader {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #111827;
+            z-index: 10000;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        #preloader.loaded { opacity: 0; visibility: hidden; }
+        .spinner {
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            border: 5px solid #374151;
+            border-top-color: var(--color-primary);
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* --- BACKGROUND VIDEO --- */
+        #background-video {
+            position: fixed;
+            top: 50%; left: 50%;
+            min-width: 100%; min-height: 100%;
+            width: auto; height: auto;
+            z-index: -100;
+            transform: translate(-50%, -50%);
+            filter: brightness(0.4) contrast(1.1);
+            object-fit: cover;
+        }                        
+        
+        #hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7));
+            z-index: 0;
+        }
+        #hero > div { position: relative; z-index: 1; }
+
+        /* Mobile Menu Transitions */
+        #mobile-menu {
+            transition: all 0.3s ease-in-out;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+        }
+        #mobile-menu.open {
+            max-height: 500px;
+            opacity: 1;
+            padding-bottom: 1.5rem;
+        }
+
+        /* Responsive spacing */
+        section { padding-top: 5rem; padding-bottom: 5rem; }
+        @media (min-width: 768px) {
+            section { padding-top: 8rem; padding-bottom: 8rem; }
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #header.scrolled {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.1);
+        }
+        .dark #header.scrolled {
+            background-color: rgba(17, 24, 39, 0.95);
+        }
+
+        .whatsapp-fab {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 1000;
+            background-color: #25D366;
+            color: white;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .whatsapp-fab:hover { transform: scale(1.1) translateY(-5px); }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .testimonial-card {
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .dark .testimonial-card {
+            border-color: rgba(255,255,255,0.05);
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100">
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Background Video -->
+    <video autoplay loop muted playsinline id="background-video">
+        <source src="background.mp4" type="video/mp4">
+    </video>
+
+    <!-- Header -->
+    <header id="header" class="fixed top-0 w-full z-50 transition-all duration-300">
+        <nav class="container mx-auto px-4 md:px-8 py-4 flex justify-between items-center">
+            <a href="#" class="flex items-center">
+                <img src="logo.png" alt="GALEBA BOKAMOSO" class="h-12 md:h-16 w-auto transition-transform hover:scale-105">
+            </a>
+            
+            <div class="flex items-center space-x-2 md:space-x-8">
+                <!-- Desktop Nav -->
+                <div id="nav-links" class="hidden lg:flex items-center space-x-8 text-sm font-semibold tracking-wide uppercase">
+                    <a href="#hero" class="hover:text-accent transition-colors">Home</a>
+                    <a href="#company-overview" class="hover:text-accent transition-colors">About</a>
+                    <a href="#services" class="hover:text-accent transition-colors">Services</a>
+                    <a href="#faq" class="hover:text-accent transition-colors">FAQ</a>
+                    <a href="#contact" class="hover:text-accent transition-colors">Contacts</a>
+                </div>
+
+                <button id="theme-toggle" class="p-2.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zm7 7a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-7.95-3.293a1 1 0 00-1.414 1.414l.707.707a1 1 0 001.414-1.414l-.707-.707z"></path></svg>
+                </button>
+
+                <a href="https://wa.me/27780020673" target="_blank" class="hidden sm:inline-flex bg-accent text-white px-6 py-2.5 rounded-full font-bold text-sm hover:bg-accent-hover transition-all shadow-lg hover:shadow-accent/40">
+                    Get Quote
+                </a>
+
+                <button id="mobile-menu-button" class="lg:hidden p-2 text-2xl focus:outline-none">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </nav>
+        
+        <div id="mobile-menu" class="lg:hidden bg-white dark:bg-gray-900 px-6 space-y-4 shadow-xl">
+            <a href="#hero" class="block py-2 font-medium border-b dark:border-gray-800">Home</a>
+            <a href="#company-overview" class="block py-2 font-medium border-b dark:border-gray-800">About</a>
+            <a href="#services" class="block py-2 font-medium border-b dark:border-gray-800">Services</a>
+            <a href="#faq" class="block py-2 font-medium border-b dark:border-gray-800">FAQ</a>
+            <a href="#contact" class="block py-2 font-medium">Contact</a>
+            <a href="https://wa.me/27780020673" class="block w-full text-center bg-accent text-white py-3 rounded-lg font-bold">WhatsApp Us</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="relative min-h-screen flex items-center justify-center text-white text-center px-4">
+            <div class="max-w-4xl mx-auto">
+                <h1 class="text-4xl md:text-7xl font-extrabold leading-tight mb-6 drop-shadow-2xl">
+                    Engineering <span class="text-accent">Durable</span> Foundations
+                </h1>
+                <p class="text-lg md:text-2xl text-gray-200 mb-10 max-w-2xl mx-auto font-medium">
+                    Specialized road construction, asphalt surfacing, and professional paving for residential and industrial sectors across South Africa.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="#contact" class="bg-accent px-10 py-4 rounded-full font-bold text-lg hover:bg-accent-hover transition-all shadow-2xl">
+                        Request Estimate
+                    </a>
+                    <a href="#services" class="bg-white/10 backdrop-blur-md border border-white/30 px-10 py-4 rounded-full font-bold text-lg hover:bg-white/20 transition-all">
+                        Our Services
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Company Overview -->
+        <section id="company-overview" class="bg-white dark:bg-gray-950 relative z-10">
+            <div class="container mx-auto px-6">
+                <div class="max-w-5xl mx-auto">
+                    <div class="text-center scroll-reveal">
+                        <h2 class="text-accent font-bold tracking-[0.2em] uppercase text-sm mb-4">Established Excellence</h2>
+                        <h3 class="text-3xl md:text-5xl font-black mb-8 dark:text-white">Innovative Civil Engineering Experts</h3>
+                        <p class="text-lg md:text-xl text-gray-600 dark:text-gray-400 leading-relaxed mb-12">
+                            <strong>GALEBA BOKAMOSO (PTY) LTD</strong> is a premier 100% black-owned construction firm based in Welkom, Free State. We specialize in delivering high-performance infrastructure solutions, from initial road foundations to professional paving for the industrial, commercial, and residential sectors. Our goal is to blend technical precision with aesthetic excellence, ensuring every project stands the test of time.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="p-8 bg-gray-50 dark:bg-gray-900 rounded-3xl border-t-4 border-accent shadow-xl scroll-reveal">
+                            <h4 class="text-xl font-bold mb-4">Our Mission</h4>
+                            <p class="text-gray-600 dark:text-gray-400">To build sustainable infrastructure through integrity and superior craftsmanship across the Free State and beyond.</p>
+                        </div>
+                        <div class="p-8 bg-gray-50 dark:bg-gray-900 rounded-3xl border-t-4 border-accent shadow-xl scroll-reveal">
+                            <h4 class="text-xl font-bold mb-4">Our Vision</h4>
+                            <p class="text-gray-600 dark:text-gray-400">To be South Africa's most trusted partner in large-scale paving and development, known for reliability and quality.</p>
+                        </div>
+                        <div class="p-8 bg-gray-50 dark:bg-gray-900 rounded-3xl border-t-4 border-accent shadow-xl scroll-reveal">
+                            <h4 class="text-xl font-bold mb-4">Our Values</h4>
+                            <p class="text-gray-600 dark:text-gray-400">We prioritize safety, 100% customer satisfaction, and building durable foundations in every square meter.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services -->
+        <section id="services" class="bg-gray-50 dark:bg-gray-900/50">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16 scroll-reveal">
+                    <h2 class="text-3xl md:text-5xl font-black mb-4">Our Core Services</h2>
+                    <div class="w-20 h-1.5 bg-accent mx-auto rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+                    <div class="group bg-white dark:bg-gray-900 rounded-3xl overflow-hidden shadow-lg transition-all hover:shadow-2xl hover:-translate-y-2 scroll-reveal">
+                        <div class="h-64 overflow-hidden">
+                            <img src="Road Construction.jpg" alt="Road Construction" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        </div>
+                        <div class="p-8">
+                            <h3 class="text-2xl font-bold mb-3 group-hover:text-accent transition-colors">Road Construction</h3>
+                            <p class="text-gray-600 dark:text-gray-400">Engineering robust and long-lasting roads for private, commercial, and industrial access.</p>
+                        </div>
+                    </div>
+                    <div class="group bg-white dark:bg-gray-900 rounded-3xl overflow-hidden shadow-lg transition-all hover:shadow-2xl hover:-translate-y-2 scroll-reveal">
+                        <div class="h-64 overflow-hidden">
+                            <img src="Asphalt & Tar Surfacing.jpg" alt="Asphalt" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        </div>
+                        <div class="p-8">
+                            <h3 class="text-2xl font-bold mb-3 group-hover:text-accent transition-colors">Asphalt & Tar</h3>
+                            <p class="text-gray-600 dark:text-gray-400">Delivering high-quality, weather-resistant surfacing for driveways, parking lots, and major roads.</p>
+                        </div>
+                    </div>
+                    <div class="group bg-white dark:bg-gray-900 rounded-3xl overflow-hidden shadow-lg transition-all hover:shadow-2xl hover:-translate-y-2 scroll-reveal">
+                        <div class="h-64 overflow-hidden">
+                            <img src="Paving Solutions.jpg" alt="Paving" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        </div>
+                        <div class="p-8">
+                            <h3 class="text-2xl font-bold mb-3 group-hover:text-accent transition-colors">Paving & Hardscaping</h3>
+                            <p class="text-gray-600 dark:text-gray-400">Expert installation for walkways, patios, and residential driveways with premium finishes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section id="testimonials" class="bg-white dark:bg-gray-950">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16 scroll-reveal">
+                    <h2 class="text-3xl md:text-5xl font-black mb-4">Client Testimonials</h2>
+                    <p class="text-gray-600 dark:text-gray-400">Real feedback from our South African partners.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="p-8 bg-white dark:bg-gray-900 rounded-3xl shadow-sm testimonial-card scroll-reveal">
+                        <div class="text-accent text-3xl mb-4"><i class="fas fa-quote-left"></i></div>
+                        <p class="text-gray-600 dark:text-gray-400 italic mb-6">"Galeba Bokamoso transformed our community access road in Welkom. The quality of the tar surfacing is world-class. Professional from start to finish."</p>
+                        <div class="font-bold text-gray-900 dark:text-white">- Thabo Mokoena</div>
+                        <div class="text-sm text-gray-500">Free State Resident</div>
+                    </div>
+                    <div class="p-8 bg-white dark:bg-gray-900 rounded-3xl shadow-sm testimonial-card scroll-reveal">
+                        <div class="text-accent text-3xl mb-4"><i class="fas fa-quote-left"></i></div>
+                        <p class="text-gray-600 dark:text-gray-400 italic mb-6">"The paving work they did for our industrial parking lot exceeded all expectations. They finished ahead of schedule and stuck to the budget."</p>
+                        <div class="font-bold text-gray-900 dark:text-white">- Sipho Cele</div>
+                        <div class="text-sm text-gray-500">Industrial Client</div>
+                    </div>
+                    <div class="p-8 bg-white dark:bg-gray-900 rounded-3xl shadow-sm testimonial-card scroll-reveal">
+                        <div class="text-accent text-3xl mb-4"><i class="fas fa-quote-left"></i></div>
+                        <p class="text-gray-600 dark:text-gray-400 italic mb-6">"Reliable construction partners are hard to find. This team brings integrity and hard work to every square meter of the project."</p>
+                        <div class="font-bold text-gray-900 dark:text-white">- Lerato Dlamini</div>
+                        <div class="text-sm text-gray-500">Property Developer</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="bg-gray-50 dark:bg-gray-900/30">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16 scroll-reveal">
+                    <h2 class="text-3xl md:text-5xl font-black mb-4">Frequently Asked Questions</h2>
+                    <div class="w-20 h-1.5 bg-accent mx-auto rounded-full"></div>
+                </div>
+                <div class="max-w-3xl mx-auto space-y-4">
+                    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm overflow-hidden scroll-reveal">
+                        <div class="faq-question flex justify-between items-center p-6 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                            <h3 class="font-bold text-lg">What is GALEBA BOKAMOSO (PTY) LTD?</h3>
+                            <i class="fas fa-chevron-down text-accent transition-transform duration-300"></i>
+                        </div>
+                        <div class="faq-answer px-6">
+                            <p class="pb-6 text-gray-600 dark:text-gray-400 border-t dark:border-gray-800 pt-4">We are a 100% black-owned construction enterprise based in Welkom, specializing in road infrastructure, asphalt surfacing, and professional paving across South Africa.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm overflow-hidden scroll-reveal">
+                        <div class="faq-question flex justify-between items-center p-6 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                            <h3 class="font-bold text-lg">What areas do you service?</h3>
+                            <i class="fas fa-chevron-down text-accent transition-transform duration-300"></i>
+                        </div>
+                        <div class="faq-answer px-6">
+                            <p class="pb-6 text-gray-600 dark:text-gray-400 border-t dark:border-gray-800 pt-4">While we are rooted in Welkom, Free State, we service various regions across South Africa for large-scale industrial and commercial infrastructure projects.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm overflow-hidden scroll-reveal">
+                        <div class="faq-question flex justify-between items-center p-6 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                            <h3 class="font-bold text-lg">Do you offer free project estimates?</h3>
+                            <i class="fas fa-chevron-down text-accent transition-transform duration-300"></i>
+                        </div>
+                        <div class="faq-answer px-6">
+                            <p class="pb-6 text-gray-600 dark:text-gray-400 border-t dark:border-gray-800 pt-4">Yes! We provide free, no-obligation quotes for all paving and construction projects. Contact us via WhatsApp at +27 78 002 0673 to get started.</p>
+                        </div>
+                    </div>
+                    <!-- New FAQ 4 -->
+                    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm overflow-hidden scroll-reveal">
+                        <div class="faq-question flex justify-between items-center p-6 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                            <h3 class="font-bold text-lg">Do you handle both residential and industrial projects?</h3>
+                            <i class="fas fa-chevron-down text-accent transition-transform duration-300"></i>
+                        </div>
+                        <div class="faq-answer px-6">
+                            <p class="pb-6 text-gray-600 dark:text-gray-400 border-t dark:border-gray-800 pt-4">Yes, we cater to both private residential clients for home driveways and patios, as well as large-scale industrial projects for road construction and commercial parking lots.</p>
+                        </div>
+                    </div>
+                    <!-- New FAQ 5 -->
+                    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm overflow-hidden scroll-reveal">
+                        <div class="faq-question flex justify-between items-center p-6 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                            <h3 class="font-bold text-lg">Is your construction work guaranteed?</h3>
+                            <i class="fas fa-chevron-down text-accent transition-transform duration-300"></i>
+                        </div>
+                        <div class="faq-answer px-6">
+                            <p class="pb-6 text-gray-600 dark:text-gray-400 border-t dark:border-gray-800 pt-4">Quality is our top priority. All our construction and paving projects come with a professional workmanship guarantee to ensure your infrastructure remains durable and safe for years.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats -->
+        <section id="stats" class="bg-gray-900 text-white">
+            <div class="container mx-auto px-6 grid grid-cols-2 md:grid-cols-3 gap-12 text-center">
+                <div class="scroll-reveal">
+                    <p class="text-4xl md:text-6xl font-black text-accent" data-target="150">0</p>
+                    <p class="uppercase text-sm tracking-widest text-gray-400 mt-2">Projects Finished</p>
+                </div>
+                <div class="scroll-reveal">
+                    <p class="text-4xl md:text-6xl font-black text-accent" data-target="120">0</p>
+                    <p class="uppercase text-sm tracking-widest text-gray-400 mt-2">Satisfied Clients</p>
+                </div>
+                <div class="scroll-reveal hidden md:block">
+                    <p class="text-4xl md:text-6xl font-black text-accent" data-target="10">0</p>
+                    <p class="uppercase text-sm tracking-widest text-gray-400 mt-2">Years of Service</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="bg-white dark:bg-gray-950">
+            <div class="container mx-auto px-6">
+                <div class="max-w-6xl mx-auto">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                        <div class="scroll-reveal">
+                            <h2 class="text-4xl md:text-5xl font-black mb-8 leading-tight">Professional Consultation <br> For Your Project</h2>
+                            <div class="space-y-8">
+                                <div class="flex items-start space-x-6">
+                                    <div class="bg-accent/10 p-4 rounded-2xl text-accent"><i class="fab fa-whatsapp text-2xl"></i></div>
+                                    <div>
+                                        <h4 class="font-bold text-lg">WhatsApp Contact</h4>
+                                        <a href="https://wa.me/27780020673" class="text-gray-600 dark:text-gray-400 hover:text-accent transition-colors text-lg font-semibold">+27 78 002 0673</a>
+                                    </div>
+                                </div>
+                                <div class="flex items-start space-x-6">
+                                    <div class="bg-accent/10 p-4 rounded-2xl text-accent"><i class="fas fa-map-marker-alt text-2xl"></i></div>
+                                    <div>
+                                        <h4 class="font-bold text-lg">Our HQ</h4>
+                                        <p class="text-gray-600 dark:text-gray-400 text-lg">4 Kiewiet Street, Lakeview, Welkom, Free State, 9459</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start space-x-6">
+                                    <div class="bg-accent/10 p-4 rounded-2xl text-accent"><i class="fas fa-envelope text-2xl"></i></div>
+                                    <div>
+                                        <h4 class="font-bold text-lg">Business Email</h4>
+                                        <p class="text-gray-600 dark:text-gray-400 text-lg">info@galebabokamoso.co.za</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-50 dark:bg-gray-900 p-8 md:p-12 rounded-[2rem] shadow-2xl scroll-reveal">
+                            <form action="#" class="space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <input type="text" placeholder="Full Name" class="w-full p-4 rounded-xl border-none ring-1 ring-gray-200 focus:ring-2 focus:ring-accent dark:bg-gray-800 dark:ring-gray-700 outline-none transition-all">
+                                    <input type="email" placeholder="Email Address" class="w-full p-4 rounded-xl border-none ring-1 ring-gray-200 focus:ring-2 focus:ring-accent dark:bg-gray-800 dark:ring-gray-700 outline-none transition-all">
+                                </div>
+                                <textarea placeholder="Message..." rows="4" class="w-full p-4 rounded-xl border-none ring-1 ring-gray-200 focus:ring-2 focus:ring-accent dark:bg-gray-800 dark:ring-gray-700 outline-none transition-all"></textarea>
+                                <button class="w-full bg-accent text-white font-bold py-4 rounded-xl hover:bg-accent-hover transition-all shadow-lg text-lg">Submit Request</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- WhatsApp Fab -->
+    <a href="https://wa.me/27780020673" target="_blank" class="whatsapp-fab" aria-label="WhatsApp Contact">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <footer class="bg-white dark:bg-gray-950 py-12 border-t border-gray-100 dark:border-gray-900">
+        <div class="container mx-auto px-6 text-center">
+            <img src="logo.png" alt="GALEBA BOKAMOSO" class="h-12 mx-auto mb-8 grayscale opacity-50">
+            <p class="text-gray-500 font-medium">© <span id="year"></span> GALEBA BOKAMOSO (PTY) LTD. All Rights Reserved.</p>
+            <p class="text-xs text-gray-400 mt-2 uppercase tracking-tighter">Reg No: 2026 / 140443 / 07</p>
+        </div>
+    </footer>
+
+    <script>
+        // Header Scroll
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 20);
+        });
+
+        // Mobile Menu
+        const menuBtn = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('open');
+        });
+
+        // FAQ Toggle
+        document.querySelectorAll('.faq-question').forEach(q => {
+            q.addEventListener('click', () => {
+                const answer = q.nextElementSibling;
+                const icon = q.querySelector('i');
+                const isOpen = answer.style.maxHeight;
+                
+                // Close others
+                document.querySelectorAll('.faq-answer').forEach(a => a.style.maxHeight = null);
+                document.querySelectorAll('.faq-question i').forEach(i => i.style.transform = "rotate(0deg)");
+
+                answer.style.maxHeight = isOpen ? null : answer.scrollHeight + "px";
+                icon.style.transform = isOpen ? "rotate(180deg)" : "rotate(0deg)";
+            });
+        });
+
+        // Theme Toggle
+        const themeBtn = document.getElementById('theme-toggle');
+        const darkIcon = document.getElementById('theme-toggle-dark-icon');
+        const lightIcon = document.getElementById('theme-toggle-light-icon');
+
+        if (document.documentElement.classList.contains('dark')) lightIcon.classList.remove('hidden');
+        else darkIcon.classList.remove('hidden');
+
+        themeBtn.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            darkIcon.classList.toggle('hidden');
+            lightIcon.classList.toggle('hidden');
+        });
+
+        // Preloader
+        window.addEventListener('load', () => {
+            document.getElementById('preloader').classList.add('loaded');
+        });
+
+        // Scroll Reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+        // Stats Counter
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !entry.target.dataset.animated) {
+                    entry.target.dataset.animated = "true";
+                    const target = +entry.target.getAttribute('data-target');
+                    let count = 0;
+                    const increment = target / 40;
+                    const update = () => {
+                        count += increment;
+                        if (count < target) {
+                            entry.target.innerText = Math.ceil(count);
+                            setTimeout(update, 20);
+                        } else {
+                            entry.target.innerText = target;
+                        }
+                    };
+                    update();
+                }
+            });
+        });
+        document.querySelectorAll('[data-target]').forEach(el => statsObserver.observe(el));
+
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
